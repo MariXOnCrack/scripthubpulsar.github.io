@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Gallery with Script Copy</title>
+    <style>
+        body {
+            background-color: #1E1E1E;
+            color: #FFFFFF;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        .search-container {
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .search-container input[type="text"] {
+            padding: 10px;
+            width: 170px;
+            border-radius: 5px;
+            border: 1px solid #505050;
+            background-color: #202025;
+            color: #FFFFFF;
+        }
+
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 20px;
+            justify-content: center;
+        }
+
+        .card {
+            background-color: #202025;
+            border: 1px solid #505050;
+            border-radius: 10px;
+            margin: 10px;
+            padding: 20px;
+            text-align: center;
+            width: 200px;
+        }
+
+        .card img {
+            border-radius: 10px;
+            max-width: 100%;
+            height: auto;
+        }
+
+        .card h3 {
+            margin-top: 10px;
+        }
+
+        .card .copy-btn {
+            background-color: #505050;
+            border: none;
+            border-radius: 5px;
+            color: #FFFFFF;
+            cursor: pointer;
+            margin-top: 10px;
+            padding: 10px 20px;
+        }
+
+        .card .copy-btn:hover {
+            background-color: #707070;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #202025;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #505050;
+            border-radius: 10px;
+        }
+    </style>
+    <!-- Include ClipboardJS library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
+</head>
+<body>
+    <div class="search-container">
+        <input type="text" id="searchBar" placeholder="Search for cards...">
+    </div>
+    <div class="card-container" id="cardContainer">
+        <div class="card">
+            <img src="https://via.placeholder.com/150" alt="Placeholder Image">
+            <h3>Card Title 1</h3>
+            <button class="copy-btn" data-clipboard-text='loadstring(game:HttpGet("https://raw.githubusercontent.com/toasty-dev/pissblox/main/solaris_bootstrapper.lua",true))()'>Copy Script</button>
+        </div>
+        <div class="card">
+            <img src="https://via.placeholder.com/150" alt="Placeholder Image">
+            <h3>Card Title 2</h3>
+            <button class="copy-btn" data-clipboard-text='loadstring(game:HttpGet("https://raw.githubusercontent.com/OtherScript/Script/main/Script", true))()'>Copy Script</button>
+        </div>
+        <div class="card">
+            <img src="https://via.placeholder.com/150" alt="Placeholder Image">
+            <h3>Card Title 3</h3>
+            <button class="copy-btn" data-clipboard-text='loadstring(game:HttpGet("https://raw.githubusercontent.com/AnotherScript/Script/main/Script", true))()'>Copy Script</button>
+        </div>
+        <!-- Add more cards as needed -->
+    </div>
+    <script>
+        // Initialize ClipboardJS
+        const clipboard = new ClipboardJS('.copy-btn');
+
+        // Add event listener for success event
+        clipboard.on('success', function(e) {
+            e.clearSelection(); // Clear the selection from the clipboard
+
+            // Change button text to "Script Copied" temporarily
+            const originalText = e.trigger.textContent;
+            e.trigger.textContent = 'Script Copied';
+
+            // Revert button text back to original after 2 seconds
+            setTimeout(function() {
+                e.trigger.textContent = originalText;
+            }, 2000);
+        });
+
+        // Add event listener for error event
+        clipboard.on('error', function(e) {
+            console.error('Failed to copy script: ', e.action);
+        });
+
+        document.getElementById('searchBar').addEventListener('input', function() {
+            const searchQuery = this.value.toLowerCase();
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                const title = card.querySelector('h3').textContent.toLowerCase();
+                if (title.includes(searchQuery)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
